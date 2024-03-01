@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15.5
+    ports:
+      - "5432:5432"
+    # healthcheck:
+    #   test: [ "CMD-SHELL", "pg_isready" ]
+    #   interval: 3s
+    #   timeout: 5s
+    #   retries: 10
+    volumes:
+      - ./migration.sql:/docker-entrypoint-initdb.d/migration.sql
+      - ./postgresql.conf:/docker-entrypoint-initdb.d/postgresql.conf
+    command: postgres -c config_file=/docker-entrypoint-initdb.d/postgresql.conf
+    environment:
+      POSTGRES_DB: project-db
+      POSTGRES_USER: project
+      POSTGRES_PASSWORD: project1211
+    deploy:
+     resources:
+       limits:
+         cpus: "0.5"
+         memory: "200MB"
