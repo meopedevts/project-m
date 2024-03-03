@@ -57,7 +57,7 @@ const VerifyTemplate = () => {
   if (sessionData?.status === 200) {
     setCookie()
     setTimeout(() => {
-      router.push('/app')
+      router.push('/dashboard')
     }, 5000)
     return (
       <div>

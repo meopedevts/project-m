@@ -9,12 +9,7 @@ export function middleware(request: NextRequest) {
     )
     const currentDate = new Date()
     const expiresAt = new Date(currentUser.expires_at)
-    if (currentDate < expiresAt) {
-      const isAlreadyInAppPage = request.url.endsWith('/app')
-      if (!isAlreadyInAppPage) {
-        return NextResponse.redirect(new URL('/app', request.url))
-      }
-    } else {
+    if (currentDate > expiresAt) {
       return NextResponse.redirect(new URL('/auth/login', request.url))
     }
   } else {

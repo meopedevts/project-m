@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Loader2, MailCheck } from 'lucide-react'
+import { CheckCircle2, Loader2 } from 'lucide-react'
 import axios, { AxiosError } from 'axios'
 import { useToast } from '@/components/ui/use-toast'
 
@@ -39,13 +39,19 @@ const LoginForm = () => {
       .post('http://localhost:8080/auth/login', values)
       .then(() => {
         toast({
-          duration: 4500,
+          duration: 3000,
+          // @ts-expect-error Missing type definition, but component works
           title: (
-            <div className="flex items-center justify-center gap-4 px-2 py-1 text-base font-semibold text-emerald-900">
-              <MailCheck size={28} /> Link de acesso enviado com sucesso!
+            <div className="flex items-center justify-center gap-4 px-2 py-1 text-sm font-semibold text-emerald-600">
+              <CheckCircle2
+                size={24}
+                fill="#059669"
+                className="text-emerald-100"
+              />
+              Enviado email de acesso à plataforma
             </div>
           ),
-          className: 'bg-emerald-500',
+          className: 'bg-emerald-100',
         })
         form.reset()
       })
@@ -88,7 +94,7 @@ const LoginForm = () => {
         />
         <Button
           type="submit"
-          className="w-full dark:text-secondary-foreground"
+          className="w-full"
           disabled={form.formState.isSubmitting}
         >
           {form.formState.isSubmitting ? (
