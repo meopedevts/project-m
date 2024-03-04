@@ -4,6 +4,7 @@ import '@/styles/globals.css'
 import { ThemeProvider } from '@/components/theme/theme-provider'
 import Header from '@/components/header/header'
 import { Toaster } from '@/components/ui/toaster'
+import AppContainer from '@/components/app-container'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -27,7 +28,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Header />
-          <main className="mx-8 my-8">{children}</main>
+          <AppContainer>{children}</AppContainer>
           <Toaster />
         </ThemeProvider>
       </body>

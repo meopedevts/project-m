@@ -15,11 +15,13 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { CheckCircle2, Loader2 } from 'lucide-react'
-import axios, { AxiosError, AxiosResponse } from 'axios'
 import { toast } from '@/components/ui/use-toast'
-import { ResponseError } from '@/types/types'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { createCustomer } from '@/data/customers'
+import { Customer, ResponseError } from '@/types/types'
+import { AxiosError, isAxiosError } from 'axios'
 
-const formSchema = z.object({
+export const createCustomerSchema = z.object({
   company: z.string(),
   email: z.string().email({
     message: 'Preencha um email válido.',
@@ -27,9 +29,9 @@ const formSchema = z.object({
   phone: z.string(),
 })
 
-export default function CustomerForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+export default function CustomerPostForm() {
+  const form = useForm<z.infer<typeof createCustomerSchema>>({
+    resolver: zodResolver(createCustomerSchema),
     defaultValues: {
       company: '',
       email: '',
@@ -37,33 +39,42 @@ export default function CustomerForm() {
     },
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    await axios
-      .post('http://localhost:8080/customers', values)
-      .then((response: AxiosResponse) => {
-        if (response.status === 201) {
-          toast({
-            duration: 3000,
-            // @ts-expect-error Missing type definition, but component works
-            title: (
-              <div className="flex items-center justify-center gap-4 px-2 py-1 text-sm font-semibold text-emerald-600">
-                <CheckCircle2
-                  size={24}
-                  fill="#059669"
-                  className="text-emerald-100"
-                />
-                Cliente cadastrado com sucesso!
-              </div>
-            ),
-            className: 'bg-emerald-100',
-          })
-          setTimeout(() => {
-            form.reset()
-          }, 3500)
-        }
+  const queryClient = useQueryClient()
+
+  const { mutateAsync: createCustomerFn } = useMutation({
+    mutationFn: createCustomer,
+    onSuccess(variables) {
+      queryClient.setQueryData(['customers'], (customersCached: Customer[]) => {
+        return [...customersCached, variables]
       })
-      .catch((error: AxiosError) => {
-        const err: ResponseError = error.response?.data as ResponseError
+    },
+  })
+
+  async function onSubmit(values: z.infer<typeof createCustomerSchema>) {
+    try {
+      await createCustomerFn(values)
+      toast({
+        duration: 3000,
+        // @ts-expect-error Missing type definition, but component works
+        title: (
+          <div className="flex items-center justify-center gap-4 px-2 py-1 text-sm font-semibold text-emerald-600">
+            <CheckCircle2
+              size={24}
+              fill="#059669"
+              className="text-emerald-100"
+            />
+            Cliente cadastrado com sucesso!
+          </div>
+        ),
+        className: 'bg-emerald-100',
+      })
+      setTimeout(() => {
+        form.reset()
+      }, 3000)
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const axiosError = error as AxiosError
+        const err: ResponseError = axiosError.response?.data as ResponseError
         if (
           err.status === 400 &&
           (err.cause === 'payload' || err.cause === 'insert')
@@ -85,7 +96,8 @@ export default function CustomerForm() {
             message: err.message,
           })
         }
-      })
+      }
+    }
   }
 
   return (

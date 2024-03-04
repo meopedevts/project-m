@@ -9,7 +9,7 @@ import {
 import { buttonVariants } from '../ui/button'
 import { PlusCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import CustomerForm from './customer-form'
+import CustomerPostForm from './customer-post-form'
 
 export default function AddCustomer() {
   return (
@@ -27,7 +27,7 @@ export default function AddCustomer() {
             Preencha o formulário abaixo para cadastro do cliente.
           </DialogDescription>
         </DialogHeader>
-        <CustomerForm />
+        <CustomerPostForm />
       </DialogContent>
     </Dialog>
   )

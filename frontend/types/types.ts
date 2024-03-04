@@ -26,3 +26,12 @@ export interface ResponseError {
   cause: string
   message: string
 }
+
+export interface Customer {
+  customerId: number
+  company: string
+  email: string
+  phone: string
+  createdAt: Date
+  updatedAt: Date
+}
