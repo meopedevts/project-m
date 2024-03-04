@@ -47,13 +47,19 @@ const RegisterForm = () => {
       .then((response: AxiosResponse) => {
         if (response.status === 204) {
           toast({
-            duration: 3500,
+            duration: 3000,
+            // @ts-expect-error Missing type definition, but component works
             title: (
-              <div className="flex items-center justify-center gap-4 px-2 py-1 text-base font-semibold text-emerald-900">
-                <CheckCircle2 size={28} /> Conta criada com sucesso!
+              <div className="flex items-center justify-center gap-4 px-2 py-1 text-sm font-semibold text-emerald-600">
+                <CheckCircle2
+                  size={24}
+                  fill="#059669"
+                  className="text-emerald-100"
+                />
+                Conta criada com sucesso!
               </div>
             ),
-            className: 'bg-emerald-500',
+            className: 'bg-emerald-100',
           })
         }
         setTimeout(() => router.push('/auth/login'), 4000)
@@ -152,7 +158,7 @@ const RegisterForm = () => {
           />
           <Button
             type="submit"
-            className="w-full dark:text-secondary-foreground"
+            className="w-full"
             disabled={
               form.formState.isSubmitting || form.formState.isSubmitSuccessful
             }

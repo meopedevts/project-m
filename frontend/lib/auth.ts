@@ -54,12 +54,15 @@ export async function deleteSessionCookie() {
   cookies().delete('authentication')
 }
 
-export async function resetSessionCookie(userData: UserData) {
-  cookies().delete('authentication')
-
-  cookies().set({
-    name: 'authentication',
-    value: JSON.stringify(userData),
-    secure: true,
-  })
+export async function getSessionCookie(): Promise<UserData> {
+  if (cookies().has('authentication')) {
+    return JSON.parse(cookies().get('authentication')!.value)
+  }
+  const userData: UserData = {
+    id: '',
+    email: '',
+    username: '',
+    expires_at: new Date(),
+  }
+  return userData
 }
