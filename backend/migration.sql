@@ -24,8 +24,8 @@ CREATE TABLE IF NOT EXISTS user_token (
 CREATE TABLE IF NOT EXISTS customers (
     customer_id SERIAL,
     company VARCHAR(256) NOT NULL,
-    email VARCHAR(50) NOT NULL,
-    phone VARCHAR(20)
+    email VARCHAR(50) UNIQUE NOT NULL,
+    phone VARCHAR(20),
     created_at TIMESTAMP NULL,
     updated_at TIMESTAMP NULL,
     CONSTRAINT customers_pk PRIMARY KEY (customer_id)

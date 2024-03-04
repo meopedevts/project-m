@@ -23,6 +23,11 @@ func OpenHandlers(db *pgxpool.Pool) {
 	router.RegisterUser(routing, db)
 	router.LoginUser(routing, db)
 	router.AuthVerify(routing, db)
+	router.PostCustomer(routing, db)
+	router.GetCustomer(routing, db)
+	router.GetAllCustomers(routing, db)
+	router.PutCustomer(routing, db)
+	router.DeleteCustomer(routing, db)
 
 	routing.Run(":8080")
 }
