@@ -54,7 +54,7 @@ export default function CustomerPutForm({ customer }: CustomerPutProps) {
       queryClient.setQueryData(['customers'], (customersCached: Customer[]) => {
         return [
           ...customersCached.filter(
-            // @ts-expect-error Missing type definition, but component works
+            // @ts-expect-error Missing type definition, but component works-
             (customer) => customer.customer_id !== variables.customer_id,
           ),
           variables,
