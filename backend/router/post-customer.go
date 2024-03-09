@@ -11,15 +11,9 @@ import (
 	"github.com/meopedevts/project-m/utils"
 )
 
-type CadCustomerPayload struct {
-	Company string `json:"company"`
-	Email   string `json:"email"`
-	Phone   string `json:"phone"`
-}
-
 func PostCustomer(routing *gin.Engine, db *pgxpool.Pool) {
 	routing.POST("/customers", func(c *gin.Context) {
-		var customerPayload CadCustomerPayload
+		var customerPayload types.CustomerRequest
 		if err := c.BindJSON(&customerPayload); err != nil {
 			rawResponseError := types.ResponseError{
 				Status:  http.StatusBadRequest,

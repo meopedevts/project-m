@@ -30,3 +30,14 @@ CREATE TABLE IF NOT EXISTS customers (
     updated_at TIMESTAMP NULL,
     CONSTRAINT customers_pk PRIMARY KEY (customer_id)
 );
+
+CREATE TABLE IF NOT EXISTS projects (
+    project_id SERIAL,
+    title VARCHAR(256) NOT NULL,
+    "description" VARCHAR(512),
+    customer_id INT,
+    dt_initial TIMESTAMP NULL,
+    dt_final TIMESTAMP NULL,
+    CONSTRAINT projects_pk PRIMARY KEY (project_id),
+    CONSTRAINT fk_customer_id FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+);

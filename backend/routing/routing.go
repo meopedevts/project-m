@@ -28,6 +28,11 @@ func OpenHandlers(db *pgxpool.Pool) {
 	router.GetAllCustomers(routing, db)
 	router.PutCustomer(routing, db)
 	router.DeleteCustomer(routing, db)
+	router.PostProject(routing, db)
+	router.GetProject(routing, db)
+	router.GetAllProjects(routing, db)
+	router.PutProject(routing, db)
+	router.DeleteProject(routing, db)
 
 	routing.Run(":8080")
 }
